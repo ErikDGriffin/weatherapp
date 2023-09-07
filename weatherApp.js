@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './styles.css';
-import './ weatherApp.css';
+import './weatherApp.css';
 
 class SelectedAreas {
   constructor() {
@@ -50,23 +50,29 @@ function WeatherApp() {
   const handleRefresh = async (area) => {
     try {
       const apiKey = '4f687960aac453f859c90cdb61eb395b';
+      const city = area.split('(')[0].trim(); 
       const response = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?q=${area}&appid=${apiKey}&units=imperial`
+        `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=imperial`
       );
-      
+  
       const data = await response.json();
       setWeatherData(data);
-
+  
+      const cityTime = new Date(data.dt * 1000).toLocaleTimeString();
       setSelectedAreas((prevSelectedAreas) => {
         const newSelectedAreas = new SelectedAreas();
         newSelectedAreas.selectedAreas = [...prevSelectedAreas.getAreas()];
+        const index = newSelectedAreas.selectedAreas.indexOf(area);
+        if (index !== -1) {
+          newSelectedAreas.selectedAreas[index] = city + ' (' + cityTime + ')';
+        }
         return newSelectedAreas;
       });
     } catch (error) {
       console.error('Error fetching weather data:', error);
     }
   };
-
+  
   return (
     <div className="weather-app">
       <h1>Today's Weather</h1>
