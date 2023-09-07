@@ -122,7 +122,7 @@ function WeatherApp() {
             <button onClick={() => handleRefresh(area)}>Refresh</button>
             <button
               onClick={() => {
-                
+
                 const newSelectedAreas = new SelectedAreas();
                 newSelectedAreas.selectedAreas = [...selectedAreas.getAreas()];
                 newSelectedAreas.removeArea(area);
@@ -137,6 +137,5 @@ function WeatherApp() {
     </div>
   );
 }
-
 export default WeatherApp;
 
